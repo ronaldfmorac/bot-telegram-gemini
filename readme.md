@@ -1,63 +1,56 @@
-# 🤖 Telegram AI Bot con Gemini 3 Flash
+# 🤖 Telegram AI Bot with Gemini 3 Flash
 
-Este es un bot de Telegram inteligente desarrollado en Python que utiliza la API de Google Gemini para responder consultas en tiempo real. Soporta respuestas largas mediante fragmentación automática de mensajes.
+An intelligent Telegram bot developed in Python that leverages the Google Gemini API to respond to queries in real time. It features native support for long responses through automatic message chunking.
 
-## 🚀 Características Principales 
-## 📊 Arquitectura del Sistema
+## 📊 System Architecture & Message Flow
+
+The bot operates under an asynchronous, event-driven architecture, managing the message lifecycle as follows:
 
 ```mermaid
-graph LR
-    A[Usuario Telegram] <--> B[Telegram API]
-    B <--> C[Python Backend]
-    C <--> D[Google Gemini AI]
-    C --> E[Logger / Console]
+graph TD
+    A[👤 Telegram User] -->|1. Sends query| B(🌐 Telegram API)
+    B -->|2. Asynchronous Event| C[🐍 Python Backend bot.py]
+    C <-->|3. Session Context| D[🤖 Google Gemini 3 Flash]
+    C -->|4. Length Evaluation| E{✂️ Exceeds 4096 chars?}
+    E -->|Yes| F[📦 Intelligent Chunking]
+    E -->|No| G[✉️ Direct Response]
+    F -->|5. Segmented messages| B
+    G -->|5. Single message| B
+    B -->|6. UX Rendering typing...| A
+    C -->|Traceability| H[📝 Logger / Console]
 ```
 
-- **IA de última generación:** Integración con Gemini 3 Flash.
-- **Memoria de Contexto:** Utiliza model.start_chat para recordar interacciones previas dentro de una misma sesión.
-- **Procesamiento Asíncrono:** Construido sobre python-telegram-bot para gestionar múltiples usuarios simultáneamente sin bloqueos.
-- **UX Optimizada:** Implementa acciones de chat en tiempo real (typing...) mientras la IA genera la respuesta.
-- **Fragmentación Inteligente:** Sistema automático de segmentación para respuestas que superan el límite de 4096 caracteres de Telegram.
-- **Seguridad Industrial:** Gestión de credenciales mediante variables de entorno (python-dotenv) y exclusión de archivos sensibles en Git.
+Next-Gen AI: Native integration with Gemini 3 Flash.  Context Memory: Utilizes model.start_chat to maintain conversation history within a single session.  Asynchronous Processing: Built on python-telegram-bot to seamlessly handle multiple concurrent users without blocking.  Optimized UX: Implements real-time chat actions (typing...) while the AI generates responses.  Intelligent Chunking: Automatic segmentation system for responses exceeding Telegram's 4096-character limit.  Production-Grade Security: Credential management using environment variables (python-dotenv) and strict exclusion of sensitive files via Git.  
+    
+🛠️ Installation & SetupFollow these steps to get your own bot up and running: 
 
-## 🛠️ Instalación y Configuración
+1. Clone the Repository
+Bashgit clone [https://github.com/ronaldfmorac/bot-telegram-gemini.git](https://github.com/ronaldfmorac/bot-telegram-gemini.git)
+cd bot-telegram-gemini
 
-Sigue estos pasos para tener tu propio bot funcionando:
+2. Create a Virtual EnvironmentBashpython -m venv venv
+Activate on Windows:Bash.\venv\Scripts\activate
+Activate on Mac/Linux:Bashsource venv/bin/activate
 
-### 1. Clonar el repositorio
-```bash
-git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-cd tu-repositorio
-```
-### 2. Crear un entorno virtual
-python -m venv venv
-# Activar en Windows:
-.\venv\Scripts\activate
-# Activar en Mac/Linux:
-source venv/bin/activate
+3. Install DependenciesBashpip install -r requirements.txt
 
-### 3. Instalar dependencias
-pip install -r requirements.txt
+4. Configure CredentialsCreate a .env file in the root directory and add your keys:  
+     TELEGRAM_TOKEN=YOUR_BOTFATHER_TOKEN
+     GEMINI_API_KEY=YOUR_GOOGLE_AI_STUDIO_API_KEY
 
-### 4. Configurar credenciales
-Crea un archivo .env en la carpeta raíz y añade tus llaves:
+5. Run the Bot
+    python bot.py
 
-TELEGRAM_TOKEN=TU_TOKEN_DE_BOTFATHER
-GEMINI_API_KEY=TU_API_KEY_DE_GOOGLE_STUDIO
+📦 Tech Stack
 
-### 5. Ejecutar el bot
-python bot.py
-
-## 📦 Stack Tecnológico
-
-| Tecnología            | Uso                                                              |
+| Technology            | Usage                                                            |
 | :-------------------- | :--------------------------------------------------------------- |
-| Python 3.14+          | Lenguaje núcleo del backend.                                     |
-| Google Generative AI  | Motor de inteligencia artificial (Gemini 3 Flash).               |
-| Python-Telegram-Bot   | Framework para la interfaz de mensajería asíncrona.              |
-| Python-Dotenv         | Gestión segura de configuraciones y secretos.                    |
+| Python 3.14+          | Core backend language.                                           |
+| Google Generative AI  | Artificial Intelligence engine (Gemini 3 Flash).                 |
+| Python-Telegram-Bot   | Framework for the asynchronous messaging interface.              |
+| Python-Dotenv         | Secure management of configurations and environment secrets      |
+| Logging               | Real-time monitoring and event traceability                      |
 
-| Logging               | Monitoreo y trazabilidad de eventos en tiempo real.              |
-
-## 👨‍💻 Desarrollado por
-Ronald Mora - Ingeniero de Sistemas.
+ 
+👨‍💻 Developed By
+Ronald Mora - Systems Engineer
